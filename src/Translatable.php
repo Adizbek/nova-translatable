@@ -172,8 +172,7 @@ class Translatable extends MergeValue
         $translatedField = clone $originalField;
 
         $originalAttribute = $translatedField->attribute;
-
-        $translatedField->attribute = 'translations';
+        $translatedField->attribute = 'translations_'.$originalAttribute.'_'.$locale;
 
         $translatedField->name = (count($this->locales) > 1)
             ? ($this->displayLocalizedNameUsingCallback)($translatedField, $locale)
@@ -181,7 +180,6 @@ class Translatable extends MergeValue
 
         $translatedField
             ->resolveUsing(function ($value, Model $model) use ($translatedField, $locale, $originalAttribute) {
-                $translatedField->attribute = 'translations_'.$originalAttribute.'_'.$locale;
                 $translatedField->panel = $this->panel;
 
                 return $model->translations[$originalAttribute][$locale] ?? '';
